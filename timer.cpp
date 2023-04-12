@@ -1,7 +1,3 @@
-//
-// Created by ChenXin on 2021/3/24.
-//
-
 #include "timer.h"
 
 void cx::Timer::StartTimer(std::string eventName) {

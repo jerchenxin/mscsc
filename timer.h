@@ -1,7 +1,3 @@
-//
-// Created by ChenXin on 2021/3/24.
-//
-
 #ifndef DP2H_TIMER_H
 #include <string>
 #include <map>

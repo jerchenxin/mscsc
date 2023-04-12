@@ -1,6 +1,6 @@
 # Example
 ```bash
-cd yourWorkspace/DCCM
+cd yourWorkspace/mscsc
 
 ./install
 

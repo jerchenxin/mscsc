@@ -23,9 +23,6 @@ A graph with 4 nodes and 5 edges.
 1. The first line is Num (the number of updates)
 2. The format of the next Num lines: <sourceID, targetID>
 
-## Query File Format
-1. The first line is Num (the number of queries)
-2. The format of the next Num lines: <sourceID, targetID>
 
 ## Remark
 Please make sure the deleted edge exists.

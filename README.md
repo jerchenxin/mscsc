@@ -32,7 +32,7 @@ Please make sure the deleted edge exists.
 ```c++
 #include "graph.h"
 
-CX_DCCM::Graph g(graphFilePath); // load graph
+MSCSC::Graph g(graphFilePath); // load graph
 
 g.Construction(); // build our index
 

@@ -1,4 +1,5 @@
-#ifndef DP2H_TIMER_H
+#pragma once
+
 #include <string>
 #include <map>
 #include <chrono>
@@ -26,7 +27,7 @@ auto diff = std::chrono::duration_cast<std::chrono::nanoseconds>(endTime - start
 sum += diff.count(); \
 }
 
-namespace cx {
+namespace Timer {
 
     class Timer {
     public:
@@ -42,6 +43,4 @@ namespace cx {
 
 }
 
-#define DP2H_TIMER_H
 
-#endif //DP2H_TIMER_H

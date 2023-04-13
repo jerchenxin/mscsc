@@ -5,7 +5,7 @@
 #include <random>
 #include <stack>
 
-namespace CX_DCCM {
+namespace MSCSC {
     ReducedGraph::ReducedGraph(Tarjan* tarjan) : tarjan(tarjan) {
         originalN = tarjan->n;
         extendN = tarjan->extendN;

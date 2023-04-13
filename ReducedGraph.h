@@ -11,7 +11,7 @@
 #include <unordered_set>
 #include <functional>
 
-namespace CX_DCCM {
+namespace MSCSC {
     using namespace std;
 
     // u,v: original id while s,t: mapped id
@@ -67,7 +67,7 @@ namespace CX_DCCM {
 
         // vector<vector<EdgeNode*>> sccNodeMap; // TODO
 
-        cx::Timer myTimer;
+        Timer::Timer myTimer;
 
         vector<int> state;
 

@@ -12,7 +12,7 @@ using namespace std;
 
 default_random_engine e(time(nullptr));
 
-cx::Timer myTimer;
+Timer::Timer myTimer;
 
 vector<pair<int, int>> updateEdgeList;
 
@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
 
     SetStackSize(stackSize);
 
-    CX_DCCM::Graph g(filePath);
+    MSCSC::Graph g(filePath);
 
     g.ConstructionTarjan();
     // ShowPhysicalMemory();

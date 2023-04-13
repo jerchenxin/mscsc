@@ -11,7 +11,7 @@
 #include "config.h"
 #include "timer.h"
 
-namespace CX_DCCM {
+namespace MSCSC {
     using namespace std;
 
     class Args {
@@ -97,7 +97,7 @@ namespace CX_DCCM {
 
         vector<int> sccMap; // for single node u, sscMap[u] = -1; for scc sub-node, sccMap[u] = x where x > n
         
-        cx::Timer myTimer;
+        Timer::Timer myTimer;
 
         vector<int> inStack_;
         vector<int> dfn_;

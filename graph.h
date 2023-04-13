@@ -10,7 +10,7 @@
 #include <set>
 #include <map>
 
-namespace CX_DCCM {
+namespace MSCSC {
     using namespace std;
 
     class Graph {
@@ -40,7 +40,7 @@ namespace CX_DCCM {
         // two hop
         ReducedGraph* reducedGraph;
 
-        cx::Timer myTimer;
+        Timer::Timer myTimer;
 
         // info
         int sccRealSplitNum = 0;

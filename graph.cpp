@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <queue>
 
-namespace CX_DCCM {
+namespace MSCSC {
     Graph::Graph(string filePath) {
         // tarjan for each partition
         tarjan = new Tarjan(filePath);

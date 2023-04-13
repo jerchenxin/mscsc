@@ -10,7 +10,7 @@
 #include <unordered_set>
 
 
-namespace CX_DCCM {
+namespace MSCSC {
     Tarjan::Tarjan(string filePath) {
         Load(filePath);
 

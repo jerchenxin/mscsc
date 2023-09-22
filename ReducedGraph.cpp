@@ -34,6 +34,8 @@ namespace MSCSC {
                     }
                 } else { // internal edge
                     edge->internal = true;
+
+                    tarjan->necEdgeNumMap[s]++;
                 }
             }
         }
@@ -233,6 +235,8 @@ namespace MSCSC {
                     if (tarjan->Find(edge->s) != tarjan->Find(edge->t)) {
                         edge->internal = false;
                         addEdgeList.emplace_back(edge);
+                    } else {
+                        tarjan->necEdgeNumMap[tarjan->Find(edge->s)]++;
                     }
                 }
             }

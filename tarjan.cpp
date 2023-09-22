@@ -162,6 +162,7 @@ namespace MSCSC {
     void Tarjan::InsertionManageSCCNode(IncOutput& output) {
         int maxID;
         int maxSize = 0;
+        int necEdgeSize = 0;
         
         // choose one scc node with the biggest size
         for (auto i : output.affNode) {
@@ -169,7 +170,10 @@ namespace MSCSC {
                 maxSize = -sccMap[i];
                 maxID = i;
             }
+            necEdgeSize += (-sccMap[i]); // sum of necEdgeNum for each SCC
         }
+
+        necEdgeSize += output.necEdge.size(); // new necEdge
 
         // mark arbitrary one of the superEdge's subEdge as necessary
         for (auto i : output.necEdge) {
@@ -201,13 +205,15 @@ namespace MSCSC {
 
         output.finalID = maxID;
 
+        necEdgeNumMap[maxID] = necEdgeSize;
+
         // if it is an exsiting node, then rm it
         if (output.affNode.find(output.finalID) != output.affNode.end()) {
             output.affNode.erase(output.finalID);
         } 
     }
 
-    bool Tarjan::TryBuildInternal(int u, int target, Args& args) {
+    bool Tarjan::TryBuildInternal(int u, int target, Args& args, bool& redo, int& prevLastDropNum, int threshold, int& necEdgeNum) {
         auto& dfn = args.dfn;
         auto& low = args.low;
         auto& dfnNum = args.dfnNum;
@@ -216,7 +222,11 @@ namespace MSCSC {
         auto& visited = args.visited;
 
         if (u == target) {
-            return true;
+            if (necEdgeNum + prevLastDropNum > threshold) {
+                redo = true; // redo, indicate the necEdgeNum is above the 2-approximation
+            } else {
+                return true;
+            }
         }
 
         visited.emplace_back(u);
@@ -230,18 +240,35 @@ namespace MSCSC {
                 continue;
             }
 
+            if (edge->needed) {
+                necEdgeNum--;
+            }
+
             edge->needed = false; // need to mark it false at first
             int v = edge->t;
 
             if (!dfn[v]) {
+                if (!edge->needed) {
+                    necEdgeNum++;
+                }
+
                 edge->needed = true;
 
-                if (TryBuildInternal(v, target, args)) {
+                // return true only when the first time meet target, and the necNum is smaller than threshold
+                prevLastDropNum =+ ((lastDrop!=nullptr&&!lastDrop->needed) ? 1 : 0);
+
+                if (TryBuildInternal(v, target, args, redo, prevLastDropNum, threshold, necEdgeNum)) {
                     if (lastDrop) { // before return, update the last dropping edge
+                        if (!lastDrop->needed) {
+                            necEdgeNum++;
+                        }
+
                         lastDrop->needed = true;
                     }
                     return true;
                 }
+
+                prevLastDropNum -= ((lastDrop!=nullptr&&!lastDrop->needed) ? 1 : 0);
 
                 if (low[v] <= low[u]) {
                     lastDrop = edge;
@@ -254,10 +281,14 @@ namespace MSCSC {
         }
 
         if (lastDrop) { // before return, update the last dropping edge
+            if (!lastDrop->needed) {
+                necEdgeNum++;
+            }
+
             lastDrop->needed = true;
         }
 
-        if (low[u] == dfn[u]) {
+        if (low[u] == dfn[u] && !redo) {
             CreateSCC(u, dfsStack, inStack);
         }
 
@@ -326,7 +357,9 @@ namespace MSCSC {
         }
         
         // first round: to determine whether there is a path from u to v
-        if (TryBuildInternal(u, v, args)) {
+        bool redo = false;
+        int prevLastDropNum = 0;
+        if (TryBuildInternal(u, v, args, redo, prevLastDropNum, 2*(sccNodeList.size()-1), necEdgeNumMap[Find(v)]) || redo) {
             for (auto i : sccNodeList) {
                 sccMap[i] = sccID;
             }
@@ -378,6 +411,12 @@ namespace MSCSC {
         } else {
             sccMap[sccID] = 0;
             emptyNode.push(sccID);
+        }
+
+        // since split, recalculate the necEdgeNum for each SCC
+        // in tarjan.cpp, it just sets to be 0. Then recalculation is always in ReduceGraph.cpp
+        for (auto i : output.newNode) {
+            necEdgeNumMap[i] = 0;
         }
 
         return output;

@@ -56,7 +56,7 @@ namespace MSCSC {
         void BatchInsertionSCC(map<int, IncOutput>& output);
 
         // scc split
-        bool TryBuildInternal(int u, int target, Args& args); // return whether there is an alternative path
+        bool TryBuildInternal(int u, int target, Args& args, bool& redo, int& prevLastDropNum, int threshold, int& necEdgeNum); // return whether there is an alternative path
         void BuildInternal(int u, Args& args);
         DecOutput DeletionSCC(int u, int v); // return nodes whose sccMap value changes
 
@@ -92,6 +92,7 @@ namespace MSCSC {
 
         vector<vector<int>> invSCCMap; // to save the nodes in a scc node
 
+        unordered_map<int, int> necEdgeNumMap; // scc_id -> necEdgeNum.  This one is first calculated in ReducedGraph, as it needs to scan all edges
     private:
         priority_queue<int, vector<int>, greater<int>> emptyNode; // unused scc node pool
 

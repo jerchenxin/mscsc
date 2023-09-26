@@ -240,18 +240,12 @@ namespace MSCSC {
                 continue;
             }
 
-            if (edge->needed) {
-                necEdgeNum--;
-            }
-
+            necEdgeNum -= edge->needed;
             edge->needed = false; // need to mark it false at first
             int v = edge->t;
 
             if (!dfn[v]) {
-                if (!edge->needed) {
-                    necEdgeNum++;
-                }
-
+                necEdgeNum++;
                 edge->needed = true;
 
                 // return true only when the first time meet target, and the necNum is smaller than threshold
@@ -259,10 +253,7 @@ namespace MSCSC {
 
                 if (TryBuildInternal(v, target, args, redo, prevLastDropNum, threshold, necEdgeNum)) {
                     if (lastDrop) { // before return, update the last dropping edge
-                        if (!lastDrop->needed) {
-                            necEdgeNum++;
-                        }
-
+                        necEdgeNum += (1 - lastDrop->needed);
                         lastDrop->needed = true;
                     }
                     return true;
@@ -281,10 +272,7 @@ namespace MSCSC {
         }
 
         if (lastDrop) { // before return, update the last dropping edge
-            if (!lastDrop->needed) {
-                necEdgeNum++;
-            }
-
+            necEdgeNum += (1 - lastDrop->needed);
             lastDrop->needed = true;
         }
 
